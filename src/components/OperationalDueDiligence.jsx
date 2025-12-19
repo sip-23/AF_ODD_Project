@@ -2,13 +2,57 @@ import { useState, useEffect } from "react";
 
 const OperationalDueDiligence = () => {
     const [isAcknowledged, setIsAcknowledged] = useState(false);
+    const [loginName, setLoginName] = useState("");
+    const [dueDate, setDueDate] = useState("");
 
-    // Load acknowledgment status from localStorage on component mount
+    // Function to get month name
+    const getMonthName = (monthIndex) => {
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        return months[monthIndex];
+    };
+
+    // Function to calculate due date (current date + 6 months)
+    const calculateDueDate = () => {
+        const today = new Date();
+        const due = new Date(today);
+        due.setMonth(due.getMonth() + 6);
+        
+        const monthName = getMonthName(due.getMonth());
+        const year = due.getFullYear();
+        
+        return `${monthName} ${year}`;
+    };
+
+    // Load acknowledgment status and user info from localStorage on component mount
     useEffect(() => {
         const savedStatus = localStorage.getItem('operationalDueDiligenceCompleted');
         if (savedStatus === 'true') {
             setIsAcknowledged(true);
         }
+
+        // Get user info from localStorage
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                // Extract name from email (demo@alexforbes.com -> "Demo")
+                const email = user.email || 'demo@alexforbes.com';
+                const nameFromEmail = email.split('@')[0];
+                const capitalizedName = nameFromEmail.charAt(0).toUpperCase() + nameFromEmail.slice(1);
+                setLoginName(capitalizedName);
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                setLoginName("Demo"); // Fallback
+            }
+        } else {
+            setLoginName("Demo"); // Default fallback
+        }
+
+        // Calculate and set due date
+        setDueDate(calculateDueDate());
     }, []);
 
     const handleComplete = () => {
@@ -29,10 +73,10 @@ const OperationalDueDiligence = () => {
                 </p>
                 <span className="text-md pt-2">The investment strategy and related fund structure we would like to specifically review is as follows:</span>
                 <div className="pt-2">
-                    <span className="text-md font-bold text-[#158087]">Fund manager name: </span>
-                    <span className="text-md font-bold text-[#158087]">XXXX Fund Managers</span>
+                    <span className="text-md font-bold text-[#158087]">Fund manager name: {loginName} </span>
+                    <span className="text-md font-bold text-[#158087]">Fund Managers</span>
                 </div>
-                <span className="block text-md font-bold text-[#158087] pt-2">Strategyies: All strategies/funds utilized by Alexander Forbes</span>
+                <span className="block text-md font-bold text-[#158087] pt-2">Strategies: All strategies/funds utilized by Alexander Forbes</span>
                 <p className="text-md pt-2">
                     The process of conducting the review has the following stages:
                 </p>
@@ -54,7 +98,9 @@ const OperationalDueDiligence = () => {
                     </li>
                 </ul> 
                 
-                <p className="text-md pt-2">Please provide us with your response and any other information you feel would be of assistance by <strong className="text-[#158087]">15 July 202_</strong>. 
+                <p className="text-md pt-2">
+                    Please provide us with your response and any other information you feel would be of assistance by{" "}
+                    <strong className="text-[#158087]">{dueDate}</strong>. 
                     We appreciate this request will require significant effort. However, the better the understanding we have of your 
                     company before the on-site visit, the more productive our review will be for both sides. Please mark any questions that are not relevant as N/A.
                 </p>
@@ -68,8 +114,9 @@ const OperationalDueDiligence = () => {
                     Yours sincerely
                 </span>
 
-                <span className="block pt-2">
-                    <strong className="">XXXXX YYYYY</strong>.
+                <span className="block pt-2 flex flex-col">
+                    <strong className="">Julie Govender</strong>
+                    <strong className="">Head: Investment Operational Due Diligence</strong>
                 </span>
             </div>
 

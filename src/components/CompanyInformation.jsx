@@ -1,65 +1,98 @@
 import { useState, useEffect } from "react";
 
-const CompanyInformation = () => {
+const CompanyInformation2 = () => {
   const [formData, setFormData] = useState({
     // Company Details
     companyName: '',
-    registrationNumber: '',
-    taxNumber: '',
     companyType: '',
-    dateOfIncorporation: '',
-    jurisdiction: '',
-    
-    // Contact Information
     physicalAddress: '',
     postalAddress: '',
+    jurisdiction: '',
+    docimile: '',
+    website: '',
+    registrationNumber: '',
+    dateOfRegistration: '',
+    licensedEntities: '',
+    fscaLicenseNumber: '',
+    dateOfRegApproval: '',
+    taxNumber: '',
+    financialYearEnd: '',
+    bbbeeStatus: '',
+    
+    // Total company assets under management:
+    mostRecentAuM: '',
+    auM12MonthsAgo: '',
+    auM24MonthsAgo: '',
+    auM36MonthsAgo: '',
+    
+    // Total company AuM split:
+    institutional: '',
+    retail: '',
+    other: '',
+
+    // Total company AuM split (2):
+    cis: '',
+    lifePooled: '',
+    segragated: '',
+
+    // Number of funds:
+    cisFund: '',
+    lifePooledFund: '',
+    segragatedFund: '',
+
+    // Total insurance cover & provider/broker:
+    professionalIndemnity: '',
+    fedility: '',
+    directorsAndOfficersLiability: '',
+    cyberCrime: '',
+    eAndO: '',
+    OtherSpecify: '',
+    
+    // Auditor Information
+    auditorCompanyName: '',
+    auditorDateOfAppointment: '',
+    
+    // Key third-party service providers:
+    Admin: '',
+    Brokers: '',
+    compliance: '',
+    Legal: '',
+    Mancos: '',
+    Technology: '',
+    others: '',
+
+    // regulators
+    regulatorsNames: ['', ''], 
+
+    // Custodians
+    custodians: '',
+
+    // Total employees
+    totalEmployees: '',
+
+    // Additional fields from original example
     telephone: '',
     email: '',
-    website: '',
-    
-    // Directors/Trustees Information
-    directors: [''],
-    
-    // Shareholding Structure
-    shareholders: [{ name: '', percentage: '' }],
-    
-    // Regulatory Information
-    fscaLicenseNumber: '',
+    dateOfIncorporation: '',
     fscaCategories: '',
     otherLicenses: '',
-    
-    // Financial Information
-    financialYearEnd: '',
-    auditorName: '',
-    auditorContact: '',
-    
-    // Banking Information
-    bankName: '',
-    accountNumber: '',
-    branchCode: '',
-    accountName: '',
-    
-    // Compliance Information
-    complianceOfficerName: '',
-    complianceOfficerEmail: '',
-    complianceOfficerPhone: '',
   });
 
-  const [licensedEntities, setLicensedEntities] = useState([]);
+  const [licensedEntitiesList, setLicensedEntitiesList] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
 
   // Load saved progress from localStorage
   useEffect(() => {
-    const savedData = localStorage.getItem('companyInformationData');
-    const savedEntities = localStorage.getItem('companyInformationEntities');
-    const savedCompletion = localStorage.getItem('companyInformationCompleted');
+    const savedData = localStorage.getItem('companyInformation2Data');
+    const savedEntities = localStorage.getItem('companyInformation2Entities');
+    const savedCompletion = localStorage.getItem('companyInformation2Completed');
     
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
     
     if (savedEntities) {
-      setLicensedEntities(JSON.parse(savedEntities));
+      setLicensedEntitiesList(JSON.parse(savedEntities));
     }
     
     if (savedCompletion === 'true') {
@@ -67,56 +100,35 @@ const CompanyInformation = () => {
     }
   }, []);
 
-  const handleInputChange = (section, field, value) => {
+  const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleArrayChange = (section, index, value) => {
+  const handleArrayChange = (field, index, value) => {
     setFormData(prev => ({
       ...prev,
-      [section]: prev[section].map((item, i) => i === index ? value : item)
+      [field]: prev[field].map((item, i) => i === index ? value : item)
     }));
   };
 
-  const addArrayItem = (section) => {
+  const addArrayItem = (field) => {
     setFormData(prev => ({
       ...prev,
-      [section]: [...prev[section], '']
+      [field]: [...prev[field], '']
     }));
   };
 
-  const removeArrayItem = (section, index) => {
+  const removeArrayItem = (field, index) => {
     setFormData(prev => ({
       ...prev,
-      [section]: prev[section].filter((_, i) => i !== index)
+      [field]: prev[field].filter((_, i) => i !== index)
     }));
   };
 
-  const handleShareholderChange = (index, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      shareholders: prev.shareholders.map((shareholder, i) => 
-        i === index ? { ...shareholder, [field]: value } : shareholder
-      )
-    }));
-  };
 
-  const addShareholder = () => {
-    setFormData(prev => ({
-      ...prev,
-      shareholders: [...prev.shareholders, { name: '', percentage: '' }]
-    }));
-  };
-
-  const removeShareholder = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      shareholders: prev.shareholders.filter((_, i) => i !== index)
-    }));
-  };
 
   // Licensed Entities Functions
   const addLicensedEntity = () => {
@@ -127,11 +139,11 @@ const CompanyInformation = () => {
       registrationNumber: '',
       dateOfInception: '',
     };
-    setLicensedEntities(prev => [...prev, newEntity]);
+    setLicensedEntitiesList(prev => [...prev, newEntity]);
   };
 
   const updateLicensedEntity = (id, field, value) => {
-    setLicensedEntities(prev =>
+    setLicensedEntitiesList(prev =>
       prev.map(entity =>
         entity.id === id ? { ...entity, [field]: value } : entity
       )
@@ -139,18 +151,18 @@ const CompanyInformation = () => {
   };
 
   const removeLicensedEntity = (id) => {
-    setLicensedEntities(prev => prev.filter(entity => entity.id !== id));
+    setLicensedEntitiesList(prev => prev.filter(entity => entity.id !== id));
   };
 
   const clearAllLicensedEntities = () => {
     if (window.confirm('Are you sure you want to remove all licensed entities?')) {
-      setLicensedEntities([]);
+      setLicensedEntitiesList([]);
     }
   };
 
   const handleSaveProgress = () => {
-    localStorage.setItem('companyInformationData', JSON.stringify(formData));
-    localStorage.setItem('companyInformationEntities', JSON.stringify(licensedEntities));
+    localStorage.setItem('companyInformation2Data', JSON.stringify(formData));
+    localStorage.setItem('companyInformation2Entities', JSON.stringify(licensedEntitiesList));
     alert('Company information saved successfully!');
   };
 
@@ -161,11 +173,11 @@ const CompanyInformation = () => {
       'physicalAddress', 'telephone', 'email', 'fscaLicenseNumber'
     ];
     
-    const isFormValid = requiredFields.every(field => formData[field].trim() !== '');
+    const isFormValid = requiredFields.every(field => formData[field] && formData[field].toString().trim() !== '');
     
-    // Validate licensed entities (at least one complete entity is required)
-    const hasValidEntities = licensedEntities.length > 0 && 
-      licensedEntities.every(entity => 
+    // Validate licensed entities (optional)
+    const hasValidEntities = licensedEntitiesList.length === 0 || 
+      licensedEntitiesList.every(entity => 
         entity.licensedEntity.trim() !== '' && 
         entity.fspNumber.trim() !== '' && 
         entity.registrationNumber.trim() !== '' && 
@@ -173,23 +185,23 @@ const CompanyInformation = () => {
       );
     
     if (isFormValid && hasValidEntities) {
-      localStorage.setItem('companyInformationCompleted', 'true');
-      localStorage.setItem('companyInformationData', JSON.stringify(formData));
-      localStorage.setItem('companyInformationEntities', JSON.stringify(licensedEntities));
+      localStorage.setItem('companyInformation2Completed', 'true');
+      localStorage.setItem('companyInformation2Data', JSON.stringify(formData));
+      localStorage.setItem('companyInformation2Entities', JSON.stringify(licensedEntitiesList));
       setIsCompleted(true);
       alert('Company information completed successfully!');
     } else {
       if (!isFormValid) {
         alert('Please fill in all required company information fields before completing this section.');
       } else if (!hasValidEntities) {
-        alert('Please add at least one licensed entity and fill in all fields for each entity.');
+        alert('Please ensure all licensed entities have complete information or remove incomplete ones.');
       }
     }
   };
 
   const handleEdit = () => {
     setIsCompleted(false);
-    localStorage.setItem('companyInformationCompleted', 'false');
+    localStorage.setItem('companyInformation2Completed', 'false');
   };
 
   return (
@@ -225,33 +237,7 @@ const CompanyInformation = () => {
                 <input
                   type="text"
                   value={formData.companyName}
-                  onChange={(e) => handleInputChange('companyDetails', 'companyName', e.target.value)}
-                  disabled={isCompleted}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Registration Number *
-                </label>
-                <input
-                  type="text"
-                  value={formData.registrationNumber}
-                  onChange={(e) => handleInputChange('companyDetails', 'registrationNumber', e.target.value)}
-                  disabled={isCompleted}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tax Number *
-                </label>
-                <input
-                  type="text"
-                  value={formData.taxNumber}
-                  onChange={(e) => handleInputChange('companyDetails', 'taxNumber', e.target.value)}
+                  onChange={(e) => handleInputChange('companyName', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   required
@@ -263,7 +249,7 @@ const CompanyInformation = () => {
                 </label>
                 <select
                   value={formData.companyType}
-                  onChange={(e) => handleInputChange('companyDetails', 'companyType', e.target.value)}
+                  onChange={(e) => handleInputChange('companyType', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   required
@@ -278,12 +264,38 @@ const CompanyInformation = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Date of Incorporation
+                  Registration Number *
+                </label>
+                <input
+                  type="text"
+                  value={formData.registrationNumber}
+                  onChange={(e) => handleInputChange('registrationNumber', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tax Number *
+                </label>
+                <input
+                  type="text"
+                  value={formData.taxNumber}
+                  onChange={(e) => handleInputChange('taxNumber', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Date of Registration
                 </label>
                 <input
                   type="date"
-                  value={formData.dateOfIncorporation}
-                  onChange={(e) => handleInputChange('companyDetails', 'dateOfIncorporation', e.target.value)}
+                  value={formData.dateOfRegistration}
+                  onChange={(e) => handleInputChange('dateOfRegistration', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                 />
@@ -295,11 +307,56 @@ const CompanyInformation = () => {
                 <input
                   type="text"
                   value={formData.jurisdiction}
-                  onChange={(e) => handleInputChange('companyDetails', 'jurisdiction', e.target.value)}
+                  onChange={(e) => handleInputChange('jurisdiction', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   placeholder="e.g., South Africa"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Docimile
+                </label>
+                <input
+                  type="text"
+                  value={formData.docimile}
+                  onChange={(e) => handleInputChange('docimile', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Financial Year End
+                </label>
+                <input
+                  type="text"
+                  value={formData.financialYearEnd}
+                  onChange={(e) => handleInputChange('financialYearEnd', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="e.g., 31 December"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  B-BBEE Status
+                </label>
+                <select
+                  value={formData.bbbeeStatus}
+                  onChange={(e) => handleInputChange('bbbeeStatus', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                >
+                  <option value="">Select B-BBEE Status</option>
+                  <option value="Level 1">Level 1</option>
+                  <option value="Level 2">Level 2</option>
+                  <option value="Level 3">Level 3</option>
+                  <option value="Level 4">Level 4</option>
+                  <option value="Level 5">Level 5</option>
+                  <option value="Non-Compliant">Non-Compliant</option>
+                  <option value="Exempt">Exempt</option>
+                </select>
               </div>
             </div>
           </div>
@@ -314,7 +371,7 @@ const CompanyInformation = () => {
                 </label>
                 <textarea
                   value={formData.physicalAddress}
-                  onChange={(e) => handleInputChange('contactInfo', 'physicalAddress', e.target.value)}
+                  onChange={(e) => handleInputChange('physicalAddress', e.target.value)}
                   disabled={isCompleted}
                   rows="3"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
@@ -327,7 +384,7 @@ const CompanyInformation = () => {
                 </label>
                 <textarea
                   value={formData.postalAddress}
-                  onChange={(e) => handleInputChange('contactInfo', 'postalAddress', e.target.value)}
+                  onChange={(e) => handleInputChange('postalAddress', e.target.value)}
                   disabled={isCompleted}
                   rows="3"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
@@ -340,7 +397,7 @@ const CompanyInformation = () => {
                 <input
                   type="tel"
                   value={formData.telephone}
-                  onChange={(e) => handleInputChange('contactInfo', 'telephone', e.target.value)}
+                  onChange={(e) => handleInputChange('telephone', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   required
@@ -353,7 +410,7 @@ const CompanyInformation = () => {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => handleInputChange('contactInfo', 'email', e.target.value)}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   required
@@ -366,7 +423,7 @@ const CompanyInformation = () => {
                 <input
                   type="url"
                   value={formData.website}
-                  onChange={(e) => handleInputChange('contactInfo', 'website', e.target.value)}
+                  onChange={(e) => handleInputChange('website', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   placeholder="https://"
@@ -375,23 +432,443 @@ const CompanyInformation = () => {
             </div>
           </div>
 
-          {/* Directors/Trustees Section */}
+          {/* Assets Under Management Section */}
           <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Directors/Trustees</h2>
-            {formData.directors.map((director, index) => (
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Total Company Assets Under Management</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Most Recent AuM (ZAR)
+                </label>
+                <input
+                  type="number"
+                  value={formData.mostRecentAuM}
+                  onChange={(e) => handleInputChange('mostRecentAuM', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  12 Months Ago (ZAR)
+                </label>
+                <input
+                  type="number"
+                  value={formData.auM12MonthsAgo}
+                  onChange={(e) => handleInputChange('auM12MonthsAgo', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  24 Months Ago (ZAR)
+                </label>
+                <input
+                  type="number"
+                  value={formData.auM24MonthsAgo}
+                  onChange={(e) => handleInputChange('auM24MonthsAgo', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  36 Months Ago (ZAR)
+                </label>
+                <input
+                  type="number"
+                  value={formData.auM36MonthsAgo}
+                  onChange={(e) => handleInputChange('auM36MonthsAgo', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <h3 className="text-md font-semibold mt-6 mb-4 text-[#0f444c]">Total Company AuM Split by Client Type</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Institutional (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.institutional}
+                  onChange={(e) => handleInputChange('institutional', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Retail (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.retail}
+                  onChange={(e) => handleInputChange('retail', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Other (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.other}
+                  onChange={(e) => handleInputChange('other', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <h3 className="text-md font-semibold mt-6 mb-4 text-[#0f444c]">Total Company AuM Split by Fund Type</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  CIS (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.cis}
+                  onChange={(e) => handleInputChange('cis', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Life Pooled (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.lifePooled}
+                  onChange={(e) => handleInputChange('lifePooled', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Segregated (%)
+                </label>
+                <input
+                  type="number"
+                  value={formData.segragated}
+                  onChange={(e) => handleInputChange('segragated', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+            </div>
+
+            <h3 className="text-md font-semibold mt-6 mb-4 text-[#0f444c]">Number of Funds</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  CIS Funds
+                </label>
+                <input
+                  type="number"
+                  value={formData.cisFund}
+                  onChange={(e) => handleInputChange('cisFund', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Life Pooled Funds
+                </label>
+                <input
+                  type="number"
+                  value={formData.lifePooledFund}
+                  onChange={(e) => handleInputChange('lifePooledFund', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Segregated Funds
+                </label>
+                <input
+                  type="number"
+                  value={formData.segragatedFund}
+                  onChange={(e) => handleInputChange('segragatedFund', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  min="0"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Insurance Section */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Total Insurance Cover & Provider/Broker</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Insurance Cover Amount (ZAR)
+                </label>
+                <input
+                  type="number"
+                  value={formData.insuranceCover}
+                  onChange={(e) => handleInputChange('insuranceCover', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Professional Indemnity
+                </label>
+                <input
+                  type="text"
+                  value={formData.professionalIndemnity}
+                  onChange={(e) => handleInputChange('insuranceProvider', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Fedility
+                </label>
+                <input
+                  type="text"
+                  value={formData.fedility}
+                  onChange={(e) => handleInputChange('insuranceProvider', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Directors And Officers Liability
+                </label>
+                <input
+                  type="text"
+                  value={formData.directorsAndOfficersLiability}
+                  onChange={(e) => handleInputChange('insuranceBroker', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Cybercrime
+                </label>
+                <input
+                  type="text"
+                  value={formData.cyberCrime}
+                  onChange={(e) => handleInputChange('insurancePolicyNumber', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Error And Ommisions
+                </label>
+                <input
+                  type="text"
+                  value={formData.eAndO}
+                  onChange={(e) => handleInputChange('insurancePolicyNumber', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Other (specify)
+                </label>
+                <input
+                  type="text"
+                  value={formData.OtherSpecify}
+                  onChange={(e) => handleInputChange('insurancePolicyNumber', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Auditor Information */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Auditor Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Auditor Company Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.auditorCompanyName}
+                  onChange={(e) => handleInputChange('auditorCompanyName', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Date of Appointment
+                </label>
+                <input
+                  type="date"
+                  value={formData.auditorDateOfAppointment}
+                  onChange={(e) => handleInputChange('auditorDateOfAppointment', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Third-Party Service Providers */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Key Third-Party Service Providers</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Administrator
+                </label>
+                <input
+                  type="text"
+                  value={formData.Admin}
+                  onChange={(e) => handleInputChange('Admin', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Brokers
+                </label>
+                <input
+                  type="text"
+                  value={formData.Brokers}
+                  onChange={(e) => handleInputChange('Brokers', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Compliance
+                </label>
+                <input
+                  type="text"
+                  value={formData.compliance}
+                  onChange={(e) => handleInputChange('compliance', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Legal
+                </label>
+                <input
+                  type="text"
+                  value={formData.Legal}
+                  onChange={(e) => handleInputChange('Legal', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  ManCos
+                </label>
+                <input
+                  type="text"
+                  value={formData.Mancos}
+                  onChange={(e) => handleInputChange('Mancos', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Technology
+                </label>
+                <input
+                  type="text"
+                  value={formData.Technology}
+                  onChange={(e) => handleInputChange('Technology', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Others
+                </label>
+                <textarea
+                  value={formData.others}
+                  onChange={(e) => handleInputChange('others', e.target.value)}
+                  disabled={isCompleted}
+                  rows="3"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                  placeholder="List any other key service providers"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Regulators */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Regulators</h2>
+            {formData.regulatorsNames.map((regulator, index) => (
               <div key={index} className="flex gap-4 mb-3">
                 <input
                   type="text"
-                  value={director}
-                  onChange={(e) => handleArrayChange('directors', index, e.target.value)}
+                  value={regulator}
+                  onChange={(e) => handleArrayChange('regulatorsNames', index, e.target.value)}
                   disabled={isCompleted}
-                  placeholder="Full name of director/trustee"
+                  placeholder="Regulator name"
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                 />
-                {!isCompleted && formData.directors.length > 1 && (
+                {!isCompleted && formData.regulatorsNames.length > 1 && (
                   <button
                     type="button"
-                    onClick={() => removeArrayItem('directors', index)}
+                    onClick={() => removeArrayItem('regulatorsNames', index)}
                     className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
                     Remove
@@ -402,75 +879,55 @@ const CompanyInformation = () => {
             {!isCompleted && (
               <button
                 type="button"
-                onClick={() => addArrayItem('directors')}
+                onClick={() => addArrayItem('regulatorsNames')}
                 className="px-4 py-2 bg-[#158087] text-white rounded-md hover:bg-[#0f444c]"
               >
-                Add Director/Trustee
+                Add Regulator
               </button>
             )}
           </div>
 
-          {/* Shareholding Structure */}
+          {/* Custodians */}
           <div className="bg-white p-6 rounded-lg border border-gray-200">
-            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Shareholding Structure</h2>
-            {formData.shareholders.map((shareholder, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 border border-gray-100 rounded-lg">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Shareholder Name
-                  </label>
-                  <input
-                    type="text"
-                    value={shareholder.name}
-                    onChange={(e) => handleShareholderChange(index, 'name', e.target.value)}
-                    disabled={isCompleted}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Percentage (%)
-                  </label>
-                  <input
-                    type="number"
-                    value={shareholder.percentage}
-                    onChange={(e) => handleShareholderChange(index, 'percentage', e.target.value)}
-                    disabled={isCompleted}
-                    min="0"
-                    max="100"
-                    step="0.01"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
-                  />
-                </div>
-                {!isCompleted && formData.shareholders.length > 1 && (
-                  <div className="flex items-end">
-                    <button
-                      type="button"
-                      onClick={() => removeShareholder(index)}
-                      className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-            {!isCompleted && (
-              <button
-                type="button"
-                onClick={addShareholder}
-                className="px-4 py-2 bg-[#158087] text-white rounded-md hover:bg-[#0f444c]"
-              >
-                Add Shareholder
-              </button>
-            )}
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Custodians</h2>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Custodian(s)
+              </label>
+              <textarea
+                value={formData.custodians}
+                onChange={(e) => handleInputChange('custodians', e.target.value)}
+                disabled={isCompleted}
+                rows="3"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                placeholder="List your custodians"
+              />
+            </div>
+          </div>
+
+          {/* Total Employees */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-semibold mb-4 text-[#158087]">Total Employees</h2>
+            <div className="w-full md:w-1/2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Number of Employees
+              </label>
+              <input
+                type="number"
+                value={formData.totalEmployees}
+                onChange={(e) => handleInputChange('totalEmployees', e.target.value)}
+                disabled={isCompleted}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                min="0"
+              />
+            </div>
           </div>
 
           {/* Licensed Entities Table Section */}
           <div className="bg-white p-6 rounded-lg border border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-[#158087]">Licensed Entities</h2>
-              {licensedEntities.length > 0 && !isCompleted && (
+              {licensedEntitiesList.length > 0 && !isCompleted && (
                 <button
                   onClick={clearAllLicensedEntities}
                   className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
@@ -492,12 +949,12 @@ const CompanyInformation = () => {
 
               {/* Table Body */}
               <div className="divide-y divide-gray-200">
-                {licensedEntities.length === 0 ? (
+                {licensedEntitiesList.length === 0 ? (
                   <div className="p-8 text-center text-gray-500">
                     No licensed entities added yet. Click "Add Entity" to get started.
                   </div>
                 ) : (
-                  licensedEntities.map((entity) => (
+                  licensedEntitiesList.map((entity) => (
                     <div
                       key={entity.id}
                       className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 transition-colors"
@@ -585,22 +1042,22 @@ const CompanyInformation = () => {
             )}
 
             {/* Summary Statistics */}
-            {licensedEntities.length > 0 && (
+            {licensedEntitiesList.length > 0 && (
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-[#158087]">{licensedEntities.length}</div>
+                    <div className="text-2xl font-bold text-[#158087]">{licensedEntitiesList.length}</div>
                     <div className="text-gray-600">Total Entities</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-[#158087]">
-                      {licensedEntities.filter(e => e.licensedEntity && e.fspNumber && e.registrationNumber && e.dateOfInception).length}
+                      {licensedEntitiesList.filter(e => e.licensedEntity && e.fspNumber && e.registrationNumber && e.dateOfInception).length}
                     </div>
                     <div className="text-gray-600">Complete Records</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-[#158087]">
-                      {licensedEntities.filter(e => !e.licensedEntity || !e.fspNumber || !e.registrationNumber || !e.dateOfInception).length}
+                      {licensedEntitiesList.filter(e => !e.licensedEntity || !e.fspNumber || !e.registrationNumber || !e.dateOfInception).length}
                     </div>
                     <div className="text-gray-600">Incomplete Records</div>
                   </div>
@@ -620,7 +1077,7 @@ const CompanyInformation = () => {
                 <input
                   type="text"
                   value={formData.fscaLicenseNumber}
-                  onChange={(e) => handleInputChange('regulatory', 'fscaLicenseNumber', e.target.value)}
+                  onChange={(e) => handleInputChange('fscaLicenseNumber', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   required
@@ -628,16 +1085,27 @@ const CompanyInformation = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  FSCA Approved Categories *
+                  Date of Registration Approval
+                </label>
+                <input
+                  type="date"
+                  value={formData.dateOfRegApproval}
+                  onChange={(e) => handleInputChange('dateOfRegApproval', e.target.value)}
+                  disabled={isCompleted}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  FSCA Approved Categories
                 </label>
                 <input
                   type="text"
                   value={formData.fscaCategories}
-                  onChange={(e) => handleInputChange('regulatory', 'fscaCategories', e.target.value)}
+                  onChange={(e) => handleInputChange('fscaCategories', e.target.value)}
                   disabled={isCompleted}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
                   placeholder="e.g., Category I, II, etc."
-                  required
                 />
               </div>
               <div className="md:col-span-2">
@@ -646,7 +1114,7 @@ const CompanyInformation = () => {
                 </label>
                 <textarea
                   value={formData.otherLicenses}
-                  onChange={(e) => handleInputChange('regulatory', 'otherLicenses', e.target.value)}
+                  onChange={(e) => handleInputChange('otherLicenses', e.target.value)}
                   disabled={isCompleted}
                   rows="3"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#158087] disabled:bg-gray-100"
@@ -691,4 +1159,4 @@ const CompanyInformation = () => {
   );
 };
 
-export default CompanyInformation;
+export default CompanyInformation2;

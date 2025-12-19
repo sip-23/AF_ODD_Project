@@ -1,7 +1,11 @@
-// QuestionnaireLayout.jsx
+// Pulls React hooks useState and useEffect from the react package.
+// useState — used to hold and update component-local state.
+// useEffect — side-effect hook, runs after render; used here for loading/saving and progress updates.
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+// Component declaration
 import CorporateGovernanceStructure from '../components/CorporateGovernanceStructure';
+import FinancialsAuditInsurance from "../components/FinancialsAuditInsurance";
 
 const QuestionnaireLayout = () => {
   const { id } = useParams();
@@ -48,7 +52,7 @@ const QuestionnaireLayout = () => {
   const getTotalQuestions = () => {
     switch (parseInt(id)) {
       case 1: return 10; // Corporate Governance NOW HAS 10 QUESTIONS
-      case 2: return 11; // Financials and Audit
+      case 2: return 25; // Financials and Audit
       case 3: return 11; // Organisational Structure
       default: return 11;
     }
@@ -65,7 +69,12 @@ const QuestionnaireLayout = () => {
           />
         );
       case 2:
-        return <div>Financials and Audit Component - To be implemented</div>;
+        return (
+          <FinancialsAuditInsurance 
+            isCompleted={isCompleted} 
+            onProgressUpdate={handleProgressUpdate}
+          />
+        );;
       case 3:
         return <div>Organisational Structure Component - To be implemented</div>;
       default:
@@ -117,7 +126,7 @@ const QuestionnaireLayout = () => {
       <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
         <button
           onClick={handleSaveProgress}
-          className="px-6 py-2 bg-[#0f444c] text-white rounded-lg hover:bg-[#0f444c] transition-colors font-medium"
+          className="px-6 py-2 bg-[#0f444c] text-white rounded-lg hover:bg-[#0f444c] hover:opacity-80 transition-colors font-medium"
         >
           Save Progress
         </button>
@@ -125,7 +134,7 @@ const QuestionnaireLayout = () => {
         <button
           onClick={handleComplete}
           disabled={isCompleted}
-          className="px-6 py-2 text-white rounded-lg transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center"
+          className="px-6 py-2 text-white rounded-lg transition-colors font-medium hover:opacity-80 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center"
           style={{ 
             backgroundColor: !isCompleted ? '#158087' : '#9CA3AF',
             cursor: !isCompleted ? 'pointer' : 'not-allowed'

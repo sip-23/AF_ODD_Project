@@ -32,8 +32,17 @@ const QuestionnaireBySection = () => {
     const getTotalQuestions = (id) => {
         switch (parseInt(id)) {
             case 1: return 10; // Corporate Governance 
-            case 2: return 11; // Financials and Audit
-            case 3: return 11; // Organisational Structure
+            case 2: return 25; // Financials and Audit
+            case 3: return 16; // Organisational Structure
+            case 4: return 36;
+            case 5: return 14;
+            case 6: return 33;
+            case 7: return 7;
+            case 8: return 22;
+            case 9: return 14;
+            case 10: return 10;
+            case 11: return 28;
+            case 12: return 14;
             default: return 11;
         }
     };

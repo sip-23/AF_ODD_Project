@@ -264,7 +264,7 @@ const CorporateGovernanceStructure = ({ isCompleted, onProgressUpdate }) => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">1 Corporate and governance structure</h1>
+      <h1 className="text-2xl font-bold mb-6">Corporate and governance structure</h1>
       
       {/* Existing Questions 1.1 to 1.4 remain the same */}
       {/* Question 1.1 */}
@@ -542,7 +542,7 @@ const CorporateGovernanceStructure = ({ isCompleted, onProgressUpdate }) => {
 
       {/* Question 1.5 */}
       <div className="mb-8 bg-white p-6 rounded-lg border border-gray-200">
-        <h2 className="text-lg font-semibold mb-4 text-[#158087]">1.5 Describe relationships with any affiliated companies, politically exposed persons (PEP) or persons of interest. List the companies, PEPs, or persons of interest.</h2>
+        <h2 className="text-lg font-semibold mb-4 text-[#158087]">1.5 Describe relationships with any affiliated companies, domestic prominent influential persons (DPIP), politically exposed persons (PEP) or persons of interest. List the companies, PEPs, DPIPs or person(s) of interest.</h2>
         <textarea
           value={formData.affiliatedRelationships}
           onChange={(e) => handleInputChange('affiliatedRelationships', e.target.value)}
